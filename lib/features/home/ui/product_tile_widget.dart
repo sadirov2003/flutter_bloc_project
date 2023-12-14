@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_project/data/wishlist_items.dart';
 import 'package:flutter_bloc_project/features/cart/bloc/cart_bloc.dart';
 import 'package:flutter_bloc_project/features/cart/bloc/cart_event.dart';
@@ -60,7 +59,7 @@ class ProductTileWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '\$' + productDataModel.price.toString(),
+              '\$${productDataModel.price}',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -76,7 +75,7 @@ class ProductTileWidget extends StatelessWidget {
                           productDataModel: productDataModel,
                         ),
                       );
-                      homeBloc.add(HomeProductResetEvent());
+                      
                     } else {
                       homeBloc.add(
                         HomeProductWishlistButtonClickedEvent(
@@ -84,6 +83,7 @@ class ProductTileWidget extends StatelessWidget {
                         ),
                       );
                     }
+                    homeBloc.add(HomeProductResetEvent());
                   },
                   icon: Icon(
                     isExistWishlist ? Icons.favorite : Icons.favorite_border,

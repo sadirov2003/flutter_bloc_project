@@ -46,7 +46,7 @@ class WishlistTileWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '\$' + productDataModel.price.toString(),
+                '\$${productDataModel.price}',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -56,8 +56,7 @@ class WishlistTileWidget extends StatelessWidget {
                 children: [
                   IconButton(
                       onPressed: () {
-                        wishlistBloc.add(RemoveFromWishlistEvent(
-                            productDataModel: productDataModel));
+                        wishlistBloc.add(RemoveFromWishlistEvent(productDataModel: productDataModel));
                       },
                       icon: const Icon(Icons.favorite)),
                   IconButton(

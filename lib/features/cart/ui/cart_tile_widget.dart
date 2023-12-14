@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc_project/features/cart/bloc/cart_bloc.dart';
 import 'package:flutter_bloc_project/features/cart/bloc/cart_event.dart';
-import 'package:flutter_bloc_project/features/home/bloc/home_bloc.dart';
-import 'package:flutter_bloc_project/features/home/bloc/home_event.dart';
 import 'package:flutter_bloc_project/features/home/models/home_product_data_model.dart';
 
 class CartTileWidget extends StatelessWidget {
@@ -44,7 +42,7 @@ class CartTileWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('\$' + productDataModel.price.toString(),
+            Text('\$${productDataModel.price}',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

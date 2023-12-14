@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_project/features/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc_project/features/wishlist/bloc/wishlist_bloc.dart';
 import 'package:flutter_bloc_project/features/wishlist/bloc/wishlist_event.dart';
 import 'package:flutter_bloc_project/features/wishlist/bloc/wishlist_state.dart';
 import 'package:flutter_bloc_project/features/wishlist/ui/wishlist_tile_widget.dart';
-
-import '../../home/bloc/home_event.dart';
-import '../../home/ui/home.dart';
 
 class Wishlist extends StatefulWidget {
   const Wishlist({super.key});
