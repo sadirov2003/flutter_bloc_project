@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_project/data/wishlist_items.dart';
+import 'package:flutter_bloc_project/features/cart/bloc/cart_bloc.dart';
+import 'package:flutter_bloc_project/features/cart/bloc/cart_event.dart';
 
 import 'package:flutter_bloc_project/features/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc_project/features/home/bloc/home_event.dart';
@@ -8,6 +10,8 @@ import 'package:flutter_bloc_project/features/home/bloc/home_event.dart';
 import 'package:flutter_bloc_project/features/home/models/home_product_data_model.dart';
 import 'package:flutter_bloc_project/features/wishlist/bloc/wishlist_bloc.dart';
 import 'package:flutter_bloc_project/features/wishlist/bloc/wishlist_event.dart';
+
+import '../../../data/cart_item.dart';
 
 class ProductTileWidget extends StatelessWidget {
   final ProductDataModel productDataModel;
@@ -22,9 +26,10 @@ class ProductTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final WishlistBloc wishlistBloc = WishlistBloc();
+    final CartBloc cartBloc = CartBloc();
 
-    bool isExist = wishlistItems.contains(productDataModel);
-    print(isExist);
+    bool isExistWishlist = wishlistItems.contains(productDataModel);
+    bool isExistCart = cartItems.contains(productDataModel);
 
     return Container(
       margin: const EdgeInsets.all(10),
@@ -54,16 +59,18 @@ class ProductTileWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('\$' + productDataModel.price.toString(),
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                )),
+            Text(
+              '\$' + productDataModel.price.toString(),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Row(
               children: [
                 IconButton(
                   onPressed: () {
-                    if (isExist) {
+                    if (isExistWishlist) {
                       wishlistBloc.add(
                         RemoveFromWishlistEvent(
                           productDataModel: productDataModel,
@@ -79,15 +86,30 @@ class ProductTileWidget extends StatelessWidget {
                     }
                   },
                   icon: Icon(
-                    isExist ? Icons.favorite : Icons.favorite_border,
+                    isExistWishlist ? Icons.favorite : Icons.favorite_border,
                   ),
                 ),
                 IconButton(
-                    onPressed: () {
-                      homeBloc.add(HomeProductCartButtonClickedEvent(
-                          clickedProduct: productDataModel));
-                    },
-                    icon: const Icon(Icons.shopping_bag_outlined)),
+                  onPressed: () {
+                    if (isExistCart) {
+                      cartBloc.add(
+                        CartRemoveFromCartEvent(
+                            productDataModel: productDataModel),
+                      );
+                    } else {
+                      homeBloc.add(
+                        HomeProductCartButtonClickedEvent(
+                            clickedProduct: productDataModel),
+                      );
+                    }
+                    homeBloc.add(HomeProductResetEvent());
+                  },
+                  icon: Icon(
+                    isExistCart
+                        ? Icons.shopping_bag
+                        : Icons.shopping_bag_outlined,
+                  ),
+                ),
               ],
             ),
           ],

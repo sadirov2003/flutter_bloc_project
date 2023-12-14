@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_project/features/home/bloc/home_bloc.dart';
-import 'package:flutter_bloc_project/features/home/bloc/home_event.dart';
 import 'package:flutter_bloc_project/features/home/models/home_product_data_model.dart';
 import 'package:flutter_bloc_project/features/wishlist/bloc/wishlist_bloc.dart';
 import 'package:flutter_bloc_project/features/wishlist/bloc/wishlist_event.dart';
@@ -16,13 +14,13 @@ class WishlistTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeBloc homeBloc = HomeBloc();
     return Container(
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black)),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.black),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -47,18 +45,19 @@ class WishlistTileWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('\$' + productDataModel.price.toString(),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  )),
+              Text(
+                '\$' + productDataModel.price.toString(),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               Row(
                 children: [
                   IconButton(
                       onPressed: () {
                         wishlistBloc.add(RemoveFromWishlistEvent(
                             productDataModel: productDataModel));
-                        homeBloc.add(HomeProductResetEvent());
                       },
                       icon: const Icon(Icons.favorite)),
                   IconButton(

@@ -43,16 +43,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(
       HomeLoadedSuccessState(
         products: GroceryData.groceryProducts
-            .map((e) => ProductDataModel(
+            .map(
+              (e) => ProductDataModel(
                 id: e['id'],
                 name: e['name'],
                 description: e['description'],
                 price: e['price'],
-                imageUrl: e['imageUrl']))
-            .toList(),
+                imageUrl: e['imageUrl'],
+              ),
+            ).toList(),
       ),
     );
-   
   }
 
   FutureOr<void> homeProductCartButtonClickedEvent(
@@ -74,8 +75,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(HomeNavigateToCartPageActionState());
   }
 
-  FutureOr<void> homeProductResetEvent(
-      HomeProductResetEvent event, Emitter<HomeState> emit) {
+  FutureOr<void> homeProductResetEvent(HomeProductResetEvent event, Emitter<HomeState> emit) {
     emit(
       HomeLoadedSuccessState(
         products: GroceryData.groceryProducts
@@ -87,8 +87,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                 price: e['price'],
                 imageUrl: e['imageUrl'],
               ),
-            )
-            .toList(),
+            ).toList(),
       ),
     );
   }

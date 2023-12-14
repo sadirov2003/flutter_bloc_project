@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     homeBloc.add(HomeInitialEvent());
-    
+
     super.initState();
   }
 
@@ -29,13 +29,14 @@ class _HomeState extends State<Home> {
       bloc: homeBloc,
       listenWhen: (previous, current) => current is HomeActionState,
       buildWhen: (previous, current) => current is! HomeActionState,
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is HomeNavigateToCartPageActionState) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => const Cart())));
+          await Navigator.push(context, MaterialPageRoute(builder: ((context) => const Cart())));
+          homeBloc.add(HomeProductResetEvent());
         } else if (state is HomeNavigateToWishlistPageActionState) {
-          Navigator.push(context,
+          await Navigator.push(context,
               MaterialPageRoute(builder: ((context) => const Wishlist())));
+          homeBloc.add(HomeProductResetEvent());
         } else if (state is HomeProductItemCartedActionState) {
           ScaffoldMessenger.of(context)
               .showSnackBar(const SnackBar(content: Text('Item carted')));
@@ -55,31 +56,33 @@ class _HomeState extends State<Home> {
           case HomeLoadedSuccessState:
             final successState = state as HomeLoadedSuccessState;
             return Scaffold(
-                appBar: AppBar(
-                  backgroundColor: Colors.teal,
-                  title: const Text('Akshit Grocery App'),
-                  centerTitle: true,
-                  actions: [
-                    IconButton(
-                        onPressed: () {
-                          homeBloc.add(HomeWishlistButtonNavigateEvent());
-                        },
-                        icon: const Icon(Icons.favorite_border)),
-                    IconButton(
-                        onPressed: () {
-                          homeBloc.add(HomeCartButtonNavigateEvent());
-                        },
-                        icon: const Icon(Icons.shopping_bag_outlined)),
-                  ],
-                ),
-                body: ListView.builder(
-                    itemCount: successState.products.length,
-                    itemBuilder: (context, index) {
-                      return ProductTileWidget(
-                          productDataModel: successState.products[index],
-                          homeBloc: homeBloc,
-                      );
-                    },),);
+              appBar: AppBar(
+                backgroundColor: Colors.teal,
+                title: const Text('Akshit Grocery App'),
+                centerTitle: true,
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        homeBloc.add(HomeWishlistButtonNavigateEvent());
+                      },
+                      icon: const Icon(Icons.favorite_border)),
+                  IconButton(
+                      onPressed: () {
+                        homeBloc.add(HomeCartButtonNavigateEvent());
+                      },
+                      icon: const Icon(Icons.shopping_bag_outlined)),
+                ],
+              ),
+              body: ListView.builder(
+                itemCount: successState.products.length,
+                itemBuilder: (context, index) {
+                  return ProductTileWidget(
+                    productDataModel: successState.products[index],
+                    homeBloc: homeBloc,
+                  );
+                },
+              ),
+            );
           case HomeErrorState:
             return const Scaffold(
               body: Center(
